@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as crypto from 'crypto';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InvitationCode } from './entities/invitation-code.entity';
 
@@ -21,13 +21,17 @@ export class InvitationCodeService {
     }
 
     async checkInvitationCode(codeInvitation: string): Promise<boolean>{
-      const invitationCode = await this.invitationCodeRepository.findOne({ where: { code: codeInvitation } });
+      const invitationCode = await this.invitationCodeRepository.findOne({ where: { code: codeInvitation, valid: true } });
       if (invitationCode) {
         return true;
       } else {
         return false;
       }
       
+    }
+
+    async invalidateCode(code: string): Promise<UpdateResult> {
+      return this.invitationCodeRepository.update({ code }, { valid: false });
     }
     
 }
