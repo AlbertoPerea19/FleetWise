@@ -7,6 +7,7 @@ import { InvitationCode } from './entities/invitation-code.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([InvitationCode])],
   controllers: [InvitationCodeController],
-  providers: [InvitationCodeService]
+  providers: [InvitationCodeService],
+  exports: [InvitationCodeService],
 })
 export class InvitationCodeModule {}

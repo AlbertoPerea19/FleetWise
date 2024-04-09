@@ -11,6 +11,4 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
     
         @Column({nullable: false})
         valid: boolean;
-    
-        createdAt: any;
  }

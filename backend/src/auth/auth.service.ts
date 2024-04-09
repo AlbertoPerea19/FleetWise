@@ -1,24 +1,25 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { RegisterDto } from './dto/register.dto';
-import { InvitationCodeService } from 'src/invitation-code/invitation-code.service';
+import { InvitationCodeService } from '../invitation-code/invitation-code.service'; 
+
 
 @Injectable()
 export class AuthService {
-
-
-    private readonly invitationCode: InvitationCodeService
-
     constructor(
-        
         private readonly usersService: UsersService,
+        private readonly invitationCodeService: InvitationCodeService
     ) {}
 
+     
+
     async register(registerDTO: RegisterDto) {
-        
-        const isValidInvitationCode = await this.invitationCode.checkInvitationCode(registerDTO.codeInvitation);
-        if (isValidInvitationCode === null || !isValidInvitationCode) {
-            throw new Error('Invalid invitation code');
+        console.log(registerDTO.codeInvitation);
+        const isValidInvitation = await this.invitationCodeService.checkInvitationCode(registerDTO.codeInvitation);
+        console.log(isValidInvitation);
+
+        if (!isValidInvitation) {
+            throw new NotFoundException('Invalid invitation code');
         }
         
         return this.usersService.create(registerDTO);

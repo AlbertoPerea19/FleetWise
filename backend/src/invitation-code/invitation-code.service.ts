@@ -2,15 +2,11 @@ import { Injectable } from '@nestjs/common';
 import * as crypto from 'crypto';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Cron } from '@nestjs/schedule';
 import { InvitationCode } from './entities/invitation-code.entity';
 
 @Injectable()
 export class InvitationCodeService {
-    constructor(
-        @InjectRepository(InvitationCode)
-        private readonly invitationCodeRepository: Repository<InvitationCode>,
-    ) {}
+  constructor( @InjectRepository(InvitationCode) private readonly invitationCodeRepository: Repository<InvitationCode>,){}
 
     async create(): Promise<string> {
       const codeLength = 12;
@@ -23,9 +19,15 @@ export class InvitationCodeService {
       
       return randomCode;
     }
-    
-    checkInvitationCode(codeInvitation: string) {
-      return this.invitationCodeRepository.findOne({ where: { code: codeInvitation, valid: true } });
+
+    async checkInvitationCode(codeInvitation: string): Promise<boolean>{
+      const invitationCode = await this.invitationCodeRepository.findOne({ where: { code: codeInvitation } });
+      if (invitationCode) {
+        return true;
+      } else {
+        return false;
+      }
+      
     }
     
 }
