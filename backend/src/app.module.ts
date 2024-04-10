@@ -9,6 +9,8 @@ import { ConfigModule } from '@nestjs/config';
 import { In } from 'typeorm';
 import { InvitationCode } from './invitation-code/entities/invitation-code.entity';
 import { InvitationCodeModule } from './invitation-code/invitation-code.module';
+import { DriversModule } from './drivers/drivers.module';
+import { Driver } from './drivers/entities/driver.entity';
 
 @Module({
   imports: [
@@ -20,12 +22,13 @@ import { InvitationCodeModule } from './invitation-code/invitation-code.module';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      entities: [User, InvitationCode],
+      entities: [User, InvitationCode, Driver],
       synchronize: true,
     }),
     UsersModule,
     AuthModule,
-    InvitationCodeModule
+    InvitationCodeModule,
+    DriversModule
   ],
   controllers: [AppController],
   providers: [AppService],
