@@ -1,16 +1,16 @@
-# Use the official PostgreSQL image as the base image
-FROM postgres:latest
+FROM postgres:14
 
-# Set the environment variables
-ENV POSTGRES_USER=${DB_USERNAME}
-ENV POSTGRES_PASSWORD=${DB_PASSWORD}
-ENV POSTGRES_DB=${DB_DATABASE}
+ENV POSTGRES_HOST ${POSTGRES_HOST}
+ENV POSTGRES_USER ${POSTGRES_USER}
+ENV POSTGRES_PASSWORD ${POSTGRES_PASSWORD}
+ENV POSTGRES_DB ${POSTGRES_DB}
+ENV POSTGRES_PORT ${POSTGRES_PORT}
 
-# Copy the .env file to the container
-COPY .env /usr/src/app/.env
+RUN echo "**Inicializando PostgreSQL...**"
 
-# Expose the PostgreSQL port
-EXPOSE 5432
+COPY .env /etc/postgres/.env
 
-# Start the PostgreSQL server
-CMD ["postgres"]
+RUN echo "**Configurando PostgreSQL...**" && \
+    su postgres -c "pg_ctl -D /var/lib/postgresql/data -w initdb"
+
+CMD ["postgres", "-D", "/var/lib/postgresql/data"]
