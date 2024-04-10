@@ -22,7 +22,7 @@ export class VehiculosController {
     return this.vehiculosService.findOne(+id);
   }
 
-  @Patch(':id_vehiculo')
+  @Put(':id_vehiculo')
   update(@Param('id_vehiculo') id: number, @Body() updateVehiculoDto: UpdateVehiculoDto) {
     return this.vehiculosService.update(+id, updateVehiculoDto);
   }
