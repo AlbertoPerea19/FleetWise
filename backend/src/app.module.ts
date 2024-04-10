@@ -11,6 +11,8 @@ import { InvitationCode } from './invitation-code/entities/invitation-code.entit
 import { InvitationCodeModule } from './invitation-code/invitation-code.module';
 import { DriversModule } from './drivers/drivers.module';
 import { Driver } from './drivers/entities/driver.entity';
+import { VehiclesModule } from './vehicles/vehicles.module';
+import { Vehicle } from './vehicles/entities/vehicle.entity';
 
 @Module({
   imports: [
@@ -22,13 +24,14 @@ import { Driver } from './drivers/entities/driver.entity';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      entities: [User, InvitationCode, Driver],
+      entities: [User, InvitationCode, Driver, Vehicle],
       synchronize: true,
     }),
     UsersModule,
     AuthModule,
     InvitationCodeModule,
-    DriversModule
+    DriversModule,
+    VehiclesModule
   ],
   controllers: [AppController],
   providers: [AppService],
