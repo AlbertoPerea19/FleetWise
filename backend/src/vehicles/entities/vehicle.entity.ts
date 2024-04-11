@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { AssignmentHistory } from "src/assignment-history/entities/assignment-history.entity";
+import { Driver } from "src/drivers/entities/driver.entity";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Vehicle {
@@ -29,4 +31,6 @@ export class Vehicle {
    @Column()
    entryDate: Date;
 
+   @OneToMany(() => AssignmentHistory, assignmentHistory => assignmentHistory.id)
+   public assignamentHistoriesId: number;
 }
