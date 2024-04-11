@@ -1,16 +1,23 @@
-FROM postgres:14
+# Use the official Node.js 18 Alpine image as the base image for production
+FROM node:18-alpine as production
 
-ENV POSTGRES_HOST ${POSTGRES_HOST}
-ENV POSTGRES_USER ${POSTGRES_USER}
-ENV POSTGRES_PASSWORD ${POSTGRES_PASSWORD}
-ENV POSTGRES_DB ${POSTGRES_DB}
-ENV POSTGRES_PORT ${POSTGRES_PORT}
+# Set the working directory inside the container
+WORKDIR /app
 
-RUN echo "**Inicializando PostgreSQL...**"
+# Copy only package.json and package-lock.json to leverage Docker layer caching
+COPY package*.json ./
 
-COPY .env /etc/postgres/.env
+# Install runtime dependencies (without dev/test dependencies) using npm ci
+RUN npm ci --only=production
 
-RUN echo "**Configurando PostgreSQL...**" && \
-    su postgres -c "pg_ctl -D /var/lib/postgresql/data -w initdb"
+# Copy the production build from local 'dist' directory to the container
+COPY ./dist/ ./dist/
 
-CMD ["postgres", "-D", "/var/lib/postgresql/data"]
+# Copy .env file from local to Docker image
+COPY .env ./
+
+# Expose the port that the Nest.js application will be running on
+EXPOSE 3000
+
+# Command to start the Nest.js application in production mode
+CMD [ "node", "dist/main.js" ]
