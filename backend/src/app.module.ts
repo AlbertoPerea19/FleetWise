@@ -13,6 +13,7 @@ import { DriversModule } from './drivers/drivers.module';
 import { Driver } from './drivers/entities/driver.entity';
 import { VehiclesModule } from './vehicles/vehicles.module';
 import { Vehicle } from './vehicles/entities/vehicle.entity';
+import { RoutesModule } from './routes/routes.module';
 
 @Module({
   imports: [
@@ -31,7 +32,8 @@ import { Vehicle } from './vehicles/entities/vehicle.entity';
     AuthModule,
     InvitationCodeModule,
     DriversModule,
-    VehiclesModule
+    VehiclesModule,
+    RoutesModule
   ],
   controllers: [AppController],
   providers: [AppService],

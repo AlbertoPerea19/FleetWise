@@ -1,4 +1,5 @@
-import { Column, Entity, DeleteDateColumn,PrimaryGeneratedColumn } from 'typeorm';
+import { Route } from 'src/routes/entities/route.entity';
+import { Column, Entity, DeleteDateColumn,PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
 @Entity()
 export class User {
@@ -10,4 +11,7 @@ export class User {
 
     @Column({nullable: false})
     password: string;
+
+    @OneToMany(() => Route, route => route.assignedUser)
+    routes: Route[];
 }

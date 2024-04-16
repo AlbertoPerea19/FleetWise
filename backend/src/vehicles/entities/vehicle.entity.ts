@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Route } from "src/routes/entities/route.entity";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Vehicle {
@@ -28,5 +29,8 @@ export class Vehicle {
 
    @Column()
    entryDate: Date;
+
+   @OneToMany(() => Route, route => route.vehicle)
+   routes: Route[];
 
 }
