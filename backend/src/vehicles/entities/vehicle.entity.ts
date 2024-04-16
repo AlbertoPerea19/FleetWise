@@ -1,5 +1,6 @@
 import { AssignmentHistory } from "src/assignment-history/entities/assignment-history.entity";
 import { Driver } from "src/drivers/entities/driver.entity";
+import { Route } from "src/routes/entities/route.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
@@ -33,4 +34,7 @@ export class Vehicle {
 
    @OneToMany(() => AssignmentHistory, assignmentHistory => assignmentHistory.id)
    public assignamentHistoriesId: number;
+  
+   @OneToMany(() => Route, route => route.vehicle)
+   routes: Route[];
 }

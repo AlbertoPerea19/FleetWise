@@ -15,6 +15,8 @@ import { VehiclesModule } from './vehicles/vehicles.module';
 import { Vehicle } from './vehicles/entities/vehicle.entity';
 import { AssignmentHistoryModule } from './assignment-history/assignment-history.module';
 import { AssignmentHistory } from './assignment-history/entities/assignment-history.entity';
+import { RoutesModule } from './routes/routes.module';
+
 
 @Module({
   imports: [
@@ -34,7 +36,8 @@ import { AssignmentHistory } from './assignment-history/entities/assignment-hist
     InvitationCodeModule,
     DriversModule,
     VehiclesModule,
-    AssignmentHistoryModule
+    AssignmentHistoryModule,
+    RoutesModule
   ],
   controllers: [AppController],
   providers: [AppService],
