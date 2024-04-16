@@ -1,6 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { AssignmentHistory } from "src/assignment-history/entities/assignment-history.entity";
+import { Vehicle } from "src/vehicles/entities/vehicle.entity";
+import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity()
+@Entity('driver')
 export class Driver {
       @PrimaryGeneratedColumn()
       id: number;
@@ -28,4 +30,7 @@ export class Driver {
 
       @Column({ nullable: false })
       entryDate: Date;
+
+      @OneToMany(() => AssignmentHistory, assignmentHistory => assignmentHistory.id)
+      public assignamentHistoriesId: number;
 }

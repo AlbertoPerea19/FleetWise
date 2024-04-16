@@ -13,7 +13,10 @@ import { DriversModule } from './drivers/drivers.module';
 import { Driver } from './drivers/entities/driver.entity';
 import { VehiclesModule } from './vehicles/vehicles.module';
 import { Vehicle } from './vehicles/entities/vehicle.entity';
+import { AssignmentHistoryModule } from './assignment-history/assignment-history.module';
+import { AssignmentHistory } from './assignment-history/entities/assignment-history.entity';
 import { RoutesModule } from './routes/routes.module';
+
 
 @Module({
   imports: [
@@ -25,7 +28,7 @@ import { RoutesModule } from './routes/routes.module';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      entities: [User, InvitationCode, Driver, Vehicle],
+      entities: [User, InvitationCode, Driver, Vehicle, AssignmentHistory],
       synchronize: true,
     }),
     UsersModule,
@@ -33,6 +36,7 @@ import { RoutesModule } from './routes/routes.module';
     InvitationCodeModule,
     DriversModule,
     VehiclesModule,
+    AssignmentHistoryModule,
     RoutesModule
   ],
   controllers: [AppController],
