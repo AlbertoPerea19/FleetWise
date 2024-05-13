@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
 import { AssignmentHistoryService } from './assignment-history.service';
 import { CreateAssignmentHistoryDto } from './dto/create-assignment-history.dto';
 import { UpdateAssignmentHistoryDto } from './dto/update-assignment-history.dto';
@@ -18,17 +18,17 @@ export class AssignmentHistoryController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.assignmentHistoryService.findOne(+id);
+  findOne(@Param('id') id: number) {
+    return this.assignmentHistoryService.findOne(id);
   }
 
-  
-  update(@Param('id') id: string, @Body() updateAssignmentHistoryDto: UpdateAssignmentHistoryDto) {
-    return this.assignmentHistoryService.update(+id, updateAssignmentHistoryDto);
+  @Put(':id')
+  update(@Param('id') id: number, @Body() updateAssignmentHistoryDto: UpdateAssignmentHistoryDto) {
+    return this.assignmentHistoryService.update(id, updateAssignmentHistoryDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.assignmentHistoryService.remove(+id);
+  remove(@Param('id') id: number) {
+    return this.assignmentHistoryService.remove(id);
   }
 }

@@ -4,6 +4,7 @@ import { RegisterDto } from './dto/register.dto';
 import { InvitationCodeService } from '../invitation-code/invitation-code.service'; 
 import * as bcryptjs from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
+import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
@@ -14,7 +15,7 @@ export class AuthService {
     ) {}
 
     async register({email, password, codeInvitation}: RegisterDto) {
-        const isValidInvitation = await this.invitationCodeService.checkInvitationCode(codeInvitation);
+        const isValidInvitation = await this.invitationCodeService.validateInvitationCode(codeInvitation);
 
         if (!isValidInvitation) {
             throw new NotFoundException('Invalid invitation code');
@@ -24,7 +25,7 @@ export class AuthService {
         return this.usersService.create({email, password: bcryptjs.hashSync(password, 10)});
     }
 
-    async login({email, password}: RegisterDto) {
+    async login({email, password}: LoginDto) {
         const user = await this.usersService.findByEmail(email);
 
         if (!user) {

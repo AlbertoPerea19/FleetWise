@@ -27,7 +27,7 @@ export class CreateDriverDto {
    @Length(18, 18, {
      message: 'El CURP debe tener exactamente 18 caracteres.'
    })
-   CURP: string;
+   curp: string;
 
    @IsNotEmpty()
    @IsString()
@@ -35,9 +35,6 @@ export class CreateDriverDto {
 
    @IsNotEmpty()
    @IsNumber()
-   salary: number;
+   monthlysalary: number;
 
-   @IsNotEmpty()
-   @IsDateString()
-   entryDate: Date;
 }

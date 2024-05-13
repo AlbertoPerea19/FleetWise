@@ -1,37 +1,43 @@
 import { Injectable } from '@nestjs/common';
-import * as crypto from 'crypto';
-import { Repository, UpdateResult } from 'typeorm';
+import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InvitationCode } from './entities/invitation-code.entity';
+import { NotFoundException } from '@nestjs/common';
 
 @Injectable()
 export class InvitationCodeService {
-  constructor( @InjectRepository(InvitationCode) private readonly invitationCodeRepository: Repository<InvitationCode>,){}
+  constructor(
+    @InjectRepository(InvitationCode)
+    private invitationCodeRepository: Repository<InvitationCode>,
+  ) {}
 
-    async create(): Promise<string> {
-      const codeLength = 12;
-      const randomCode = crypto.randomBytes(codeLength).toString('hex');
-      
-      const invitationCode = new InvitationCode();
-      invitationCode.code = randomCode;
-      invitationCode.valid = true;
-      await this.invitationCodeRepository.save(invitationCode);
-      
-      return randomCode;
-    }
+  async generateInvitationCode(): Promise<string> {
+    const code = this.generateUniqueInvitationCode();
+    const invitationCode = this.invitationCodeRepository.create({
+      code,
+      valid: true,
+    });
+    await this.invitationCodeRepository.save(invitationCode);
+    return code;
+  }
 
-    async checkInvitationCode(codeInvitation: string): Promise<boolean>{
-      const invitationCode = await this.invitationCodeRepository.findOne({ where: { code: codeInvitation, valid: true } });
-      if (invitationCode) {
-        return true;
-      } else {
-        return false;
-      }
-      
-    }
+  async validateInvitationCode(code: string): Promise<boolean> {
+    const invitationCode = await this.invitationCodeRepository.findOne({
+      where: { code },
+    });
+    return !!invitationCode && invitationCode.valid;
+  }
 
-    async invalidateCode(code: string): Promise<UpdateResult> {
-      return this.invitationCodeRepository.update({ code }, { valid: false });
+  async invalidateCode(code: string): Promise<void> {
+    await this.invitationCodeRepository.update({ code }, { valid: false });
+  }
+
+  private generateUniqueInvitationCode(): string {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let code = '';
+    for (let i = 0; i < 8; i++) {
+      code += characters.charAt(Math.floor(Math.random() * characters.length));
     }
-    
+    return code;
+  }
 }
