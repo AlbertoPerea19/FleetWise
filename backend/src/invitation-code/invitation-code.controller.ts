@@ -7,7 +7,7 @@ export class InvitationCodeController {
 
   @Post()
   create() {
-    return this.invitationCodeService.create(); // Fix: Pass createInvitationCodeDto as an argument
+    return this.invitationCodeService.generateInvitationCode();
   }
 
 }

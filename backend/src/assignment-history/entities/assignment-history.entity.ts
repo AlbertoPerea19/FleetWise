@@ -1,8 +1,6 @@
-import { Expose } from "class-transformer";
-import { IsBoolean, IsDate, IsOptional } from "class-validator";
 import { Driver } from "src/drivers/entities/driver.entity";
 import { Vehicle } from "src/vehicles/entities/vehicle.entity";
-import { Column, CreateDateColumn, Entity, ManyToOne,PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne,PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class AssignmentHistory {
@@ -10,23 +8,24 @@ export class AssignmentHistory {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne( () => Vehicle, vehicle => vehicle.id)
-    @Expose({ name: "vehicleId" })
-    public vehicleId: number;
-    
-    @ManyToOne( () => Driver, driver => driver.id)
-    @Expose({ name: "driverId" })
-    public driverId: number;
+    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+    assignmentDate: Date;
 
-    @IsBoolean()
     @Column({default: true})
-    estado: boolean;
+    isActive: boolean;
 
-    @IsDate()
     @Column()
-    @IsOptional()
-    @CreateDateColumn()
-    fecha_asignacion: Date;
+    vehicleId: number;
 
-    
+    @Column()
+    driverId: number;
+
+    @ManyToOne(() => Vehicle, vehicle => vehicle.id, {cascade: true})
+    @JoinColumn({name: 'vehicleId'})
+    vehicle: Vehicle;
+
+    @ManyToOne(() => Driver, driver => driver.id, {cascade: true})
+    @JoinColumn({name: 'driverId'})
+    driver: Driver;
+
 }

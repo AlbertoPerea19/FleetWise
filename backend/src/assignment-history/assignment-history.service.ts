@@ -12,6 +12,15 @@ export class AssignmentHistoryService {
   private assignmentHistoryRepository: Repository<AssignmentHistory>,) {}
   
   async create(createAssignmentHistoryDto: CreateAssignmentHistoryDto) {
+    await this.assignmentHistoryRepository.update(
+      { driverId: createAssignmentHistoryDto.driverId, isActive: true },
+      { isActive: false },
+    );
+    await this.assignmentHistoryRepository.update(
+      { vehicleId: createAssignmentHistoryDto.vehicleId, isActive: true },
+      { isActive: false },
+    );
+
     return await this.assignmentHistoryRepository.save(createAssignmentHistoryDto);
   }
 
@@ -23,7 +32,7 @@ export class AssignmentHistoryService {
     return this.assignmentHistoryRepository.findOneBy({id});
   }
 
-  update(id: number, updateDriverDto: AssignmentHistory) {
+  update(id: number, updateDriverDto: UpdateAssignmentHistoryDto) {
     return this.assignmentHistoryRepository.update(id, updateDriverDto);
   }
 

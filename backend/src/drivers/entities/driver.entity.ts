@@ -1,6 +1,4 @@
-import { AssignmentHistory } from "src/assignment-history/entities/assignment-history.entity";
-import { Vehicle } from "src/vehicles/entities/vehicle.entity";
-import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('driver')
 export class Driver {
@@ -13,24 +11,22 @@ export class Driver {
       @Column({ nullable: false })
       lastName: string;
 
-      @Column({ nullable: false })
+      @Column({ nullable: false, type: 'date'})
       birthDate: Date;
 
       @Column({ nullable: false, unique: true})
       licenseNumber: number;
 
       @Column({ nullable: false, unique: true})
-      CURP: string;
+      curp: string;
 
       @Column({ nullable: false })
       address: string;
 
-      @Column({ nullable: false })
-      salary: number;
+      @Column({ nullable: false, type: 'decimal'})
+      monthlysalary: number;
 
-      @Column({ nullable: false })
-      entryDate: Date;
+      @Column({ nullable: false, type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+      createdAt: Date;
 
-      @OneToMany(() => AssignmentHistory, assignmentHistory => assignmentHistory.id)
-      public assignamentHistoriesId: number;
 }

@@ -1,6 +1,5 @@
-import { User } from 'src/users/entities/user.entity';
-import { Vehicle } from 'src/vehicles/entities/vehicle.entity';
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { AssignmentHistory } from 'src/assignment-history/entities/assignment-history.entity';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, JoinColumn, ManyToOne } from 'typeorm';
 
 
 @Entity()
@@ -9,15 +8,12 @@ export class Route {
   id: number;
 
   @Column()
-  name: string;
-
-  @Column({ type: 'date' })
-  routeDate: Date;
+  routeName: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt: Date;
+  routeDate: Date;
 
-  @Column({ default: false })
+  @Column({ default: true })
   successful: boolean;
 
   @Column({ nullable: true })
@@ -26,21 +22,23 @@ export class Route {
   @Column({ nullable: true })
   comments: string;
 
-  @Column()
+  @Column({type: 'decimal'})
   startLatitude: number;
 
-  @Column()
+  @Column({type: 'decimal'})
   startLongitude: number;
 
-  @Column()
+  @Column({type: 'decimal'})
   endLatitude: number;
 
-  @Column()
+  @Column({type: 'decimal'})
   endLongitude: number;
 
-  @ManyToOne(() => Vehicle, vehicle => vehicle.routes)
-  vehicle: Vehicle;
+  @Column()
+  assignmentHistory: number;
 
-  @ManyToOne(() => User, user => user.routes)
-  assignedUser: User;
+  @ManyToOne(() => AssignmentHistory, assignmentHistory => assignmentHistory.id, {cascade: true})
+  @JoinColumn({name: 'assignmentHistory'})
+   assigmentHistory: AssignmentHistory;
+
 }

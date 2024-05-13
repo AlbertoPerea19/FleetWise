@@ -1,7 +1,4 @@
-import { AssignmentHistory } from "src/assignment-history/entities/assignment-history.entity";
-import { Driver } from "src/drivers/entities/driver.entity";
-import { Route } from "src/routes/entities/route.entity";
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Vehicle {
@@ -9,32 +6,26 @@ export class Vehicle {
    id: number;
 
    @Column()
-   make: string;
+   brand: string;
 
    @Column()
    model: string;
 
    @Column({unique: true})
-   VIN: string;
+   vin: string;
 
    @Column({unique: true})
-   licensePlate: string;
+   plate: string;
 
-   @Column()
+   @Column({type: 'date'})
    purchasedDate: Date;
 
-   @Column()
-   price: number;
+   @Column({type: 'decimal'})
+   cost: number;
 
    @Column({nullable: true})
    photoUrl: string;
 
-   @Column()
-   entryDate: Date;
-
-   @OneToMany(() => AssignmentHistory, assignmentHistory => assignmentHistory.id)
-   public assignamentHistoriesId: number;
-  
-   @OneToMany(() => Route, route => route.vehicle)
-   routes: Route[];
+   @Column({type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
+   createdAt: Date;
 }
