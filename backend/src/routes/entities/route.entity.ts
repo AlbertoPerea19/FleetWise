@@ -10,11 +10,14 @@ export class Route {
   @Column()
   routeName: string;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  routeDate: Date;
+  @Column({default: true})
+  isActive: boolean;
 
-  @Column({ default: true })
-  successful: boolean;
+  //@Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  //routeDate: Date;
+
+  //@Column({ default: true })
+  //successful: boolean;
 
   @Column({ nullable: true })
   problemDescription: string;
@@ -35,10 +38,10 @@ export class Route {
   endLongitude: number;
 
   @Column()
-  assignmentHistory: number;
+  assignedHistoryId: number;
 
   @ManyToOne(() => AssignmentHistory, assignmentHistory => assignmentHistory.id, {cascade: true})
-  @JoinColumn({name: 'assignmentHistory'})
+  @JoinColumn({name: 'assignedHistoryId'})
    assigmentHistory: AssignmentHistory;
 
 }

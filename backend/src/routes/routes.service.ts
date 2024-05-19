@@ -13,11 +13,15 @@ export class RoutesService {
     private routesRepository: Repository<Route>,
   ){}
 
-  create(createRouteDto: CreateRouteDto) {
-    this.routesRepository.save(createRouteDto);
+  async create(createRouteDto: CreateRouteDto) {
+    await this.routesRepository.update(
+      { assignedHistoryId: createRouteDto.assignedHistoryId, isActive: true },
+      { isActive: false },
+    );
+    return await this.routesRepository.save(createRouteDto);
   }
 
-  findAll(): Promise<Route[]> {
+  async findAll(): Promise<Route[]> {
     return this.routesRepository.find();
   }
 
