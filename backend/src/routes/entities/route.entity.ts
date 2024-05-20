@@ -12,6 +12,13 @@ export class Route {
 
   @Column({default: true}) 
   isActive: boolean;
+
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  routeDate: Date;
+
+  @Column({ default: true })
+  successful: boolean;
+
   
   @Column({ nullable: true })
   problemDescription: string;
