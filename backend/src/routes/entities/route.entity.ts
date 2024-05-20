@@ -35,10 +35,10 @@ export class Route {
   endLongitude: number;
 
   @Column()
-  assignmentHistory: number;
+  assignedHistoryId: number;
 
   @ManyToOne(() => AssignmentHistory, assignmentHistory => assignmentHistory.id, {cascade: true})
-  @JoinColumn({name: 'assignmentHistory'})
+  @JoinColumn({name: 'assignedHistoryId'})
    assigmentHistory: AssignmentHistory;
 
 }
