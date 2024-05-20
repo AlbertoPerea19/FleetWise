@@ -10,8 +10,8 @@ COPY package*.json ./
 # Install runtime dependencies (without dev/test dependencies) using npm ci
 RUN npm ci --only=production
 
-# Copy the production build from local 'dist' directory to the container
-COPY ./dist/ ./dist/
+# Build the Nest.js application in production mode
+RUN npm run build
 
 # Copy .env file from local to Docker image
 COPY .env ./
