@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install runtime dependencies (without dev/test dependencies) using npm ci
-RUN npm ci --only=production
+RUN npm Install
 
 # Build the Nest.js application in production mode
 RUN npm run build
