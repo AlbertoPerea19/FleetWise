@@ -5,13 +5,13 @@ FROM node:18-alpine as production
 WORKDIR /app
 
 # Copy only package.json and package-lock.json to leverage Docker layer caching
-COPY package*.json ./
+COPY . ./
 
 # Install runtime dependencies (without dev/test dependencies) using npm ci
-RUN npm ci --only=production
+RUN npm install
 
-# Copy the production build from local 'dist' directory to the container
-COPY ./dist/ ./dist/
+# Build the Nest.js application in production mode
+RUN npm run build
 
 # Copy .env file from local to Docker image
 COPY .env ./
