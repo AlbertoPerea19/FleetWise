@@ -5,7 +5,7 @@ FROM node:18-alpine as production
 WORKDIR /app
 
 # Copy only package.json and package-lock.json to leverage Docker layer caching
-COPY package*.json ./
+COPY . ./
 
 # Install runtime dependencies (without dev/test dependencies) using npm ci
 RUN npm install
