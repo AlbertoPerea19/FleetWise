@@ -9,9 +9,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
   private readonly isDebugMode: boolean;
   
   constructor(private configService: ConfigService) {
-    console.log(configService);
     this.isDebugMode = this.configService.get<string>('DEBUG_MODE') === 'true';
-    console.log(this.configService.get<string>('DEBUG_MODE'))
   }
 
   catch(exception: HttpException, host: ArgumentsHost) {
@@ -27,7 +25,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const queryParams = request.query;
 
     if (status >= 400 && status < 500) {
-      console.log(this.isDebugMode)
       if (exception instanceof ValidationError) {
         this.logger.error('Validation error:', exception);
         if (this.isDebugMode) {

@@ -3,10 +3,12 @@ import { AppModule } from './app.module';
 import * as cors from 'cors';
 import { HttpExceptionFilter } from './filters/http-exception.filter';
 import { ConfigService } from '@nestjs/config';
+import { WinstonModule } from 'nest-winston';
+import { winstonConfig } from './winston.config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    logger: ['log', 'fatal', 'error', 'warn', 'debug'],
+    logger: WinstonModule.createLogger(winstonConfig),
   });
   const configService = app.get(ConfigService);
   app.use(cors({
