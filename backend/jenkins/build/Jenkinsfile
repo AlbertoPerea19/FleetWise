@@ -32,5 +32,15 @@ pipeline {
         }
     }
 
+    post {
+        success {
+            script {
+                build job: 'fleetwise-backend-deploy', parameters: [
+                    string(name: 'BUILD_NUMBER', value: "${env.BUILD_NUMBER}"),
+                    string(name: 'GIT_BRANCH', value: "${env.GIT_BRANCH}")
+                ]
+            }
+        }
+
 
 }
