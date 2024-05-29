@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_IMAGE_NAME = "fleetwise_backend-${env.GIT_BRANCH}:1.0.0-${env.BUILD_NUMBER}"
+        CONTAINER_NAME = "fleetwise_backend"
+    }
+
+    stages {
+ 
+
+        stage('Stop Existing Container') {
+            steps {
+                script {
+                    if (sh(script: "docker ps -a --format '{{.Names}}' | grep -q '^${env.CONTAINER_NAME}\$'", returnStatus: true) == 0) {
+                        sh "docker stop ${env.CONTAINER_NAME}"
+                        sh "docker rm ${env.CONTAINER_NAME}"
+                    }
+                }
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                dir('Fleetwise/backend') {
+                    sh "docker build -t ${env.DOCKER_IMAGE_NAME} ."
+                }
+            }
+        }
+    }
+
+
+}

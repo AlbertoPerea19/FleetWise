@@ -1,0 +1,18 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_IMAGE_NAME = "fleetwise_backend-${env.GIT_BRANCH}:1.0.0-${env.BUILD_NUMBER}"
+        CONTAINER_NAME = "fleetwise_backend"
+    }
+
+    stages {
+        stage('Run Docker Container') {
+            steps {
+                sh "docker run --rm --detach --name ${env.CONTAINER_NAME} -p 3000:3000 ${env.DOCKER_IMAGE_NAME}"
+            }
+        }
+    }
+
+   
+}
