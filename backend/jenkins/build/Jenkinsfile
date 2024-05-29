@@ -7,9 +7,7 @@ pipeline {
     }
 
     stages {
- 
-
-        stage('Stop Existing Container') {
+        stage('Detener Contenedor Existente') {
             steps {
                 script {
                     if (sh(script: "docker ps -a --format '{{.Names}}' | grep -q '^${env.CONTAINER_NAME}\$'", returnStatus: true) == 0) {
@@ -20,12 +18,12 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Construir Imagen Docker') {
             steps {
                 dir('backend') {
                     withCredentials([file(credentialsId: 'env-vars-fleetwise', variable: 'env_file')]) {
-                    writeFile file: './.env', text: readFile(env_file)
-                }
+                        writeFile file: './.env', text: readFile(env_file)
+                    }
                     sh "docker build -t ${env.DOCKER_IMAGE_NAME} ."
                 }
             }
@@ -42,5 +40,5 @@ pipeline {
             }
         }
 
-
+    }
 }
