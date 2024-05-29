@@ -1,0 +1,44 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_IMAGE_NAME = "fleetwise_backend-${env.GIT_BRANCH}:1.0.0-${env.BUILD_NUMBER}"
+        CONTAINER_NAME = "fleetwise_backend"
+    }
+
+    stages {
+        stage('Detener Contenedor Existente') {
+            steps {
+                script {
+                    if (sh(script: "docker ps -a --format '{{.Names}}' | grep -q '^${env.CONTAINER_NAME}\$'", returnStatus: true) == 0) {
+                        sh "docker stop ${env.CONTAINER_NAME}"
+                        sh "docker rm ${env.CONTAINER_NAME}"
+                    }
+                }
+            }
+        }
+
+        stage('Construir Imagen Docker') {
+            steps {
+                dir('backend') {
+                    withCredentials([file(credentialsId: 'env-vars-fleetwise', variable: 'env_file')]) {
+                        writeFile file: './.env', text: readFile(env_file)
+                    }
+                    sh "docker build -t ${env.DOCKER_IMAGE_NAME} ."
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            script {
+                build job: 'fleetwise-backend-deploy', parameters: [
+                    string(name: 'BUILD_NUMBER', value: "${env.BUILD_NUMBER}"),
+                    string(name: 'GIT_BRANCH', value: "${env.GIT_BRANCH}")
+                ]
+            }
+        }
+
+    }
+}

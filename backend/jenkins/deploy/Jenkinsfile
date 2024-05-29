@@ -1,0 +1,35 @@
+pipeline {
+    agent any
+
+    parameters {
+        string(name: 'BUILD_NUMBER', defaultValue: '', description: 'Número de construcción de la imagen a desplegar')
+        string(name: 'GIT_BRANCH', defaultValue: '', description: 'Rama Git de la imagen a desplegar')
+    }
+
+    environment {
+        DOCKER_IMAGE_NAME = "fleetwise_backend-${params.GIT_BRANCH}:1.0.0-${params.BUILD_NUMBER}"
+        CONTAINER_NAME = "fleetwise_backend"
+    }
+
+    stages {
+        stage('Detener Contenedor Existente') {
+            steps {
+                script {
+                    if (sh(script: "docker ps -a --format '{{.Names}}' | grep -q '^${CONTAINER_NAME}\$'", returnStatus: true) == 0) {
+                        sh "docker stop ${CONTAINER_NAME}"
+                        sh "docker rm ${CONTAINER_NAME}"
+                    }
+                }
+            }
+        }
+
+        stage('Ejecutar Contenedor Docker') {
+            steps {
+                script {
+                    echo "Usando la imagen Docker: ${env.DOCKER_IMAGE_NAME}"
+                    sh "docker run --rm --detach --name ${CONTAINER_NAME} -p 3000:3000 ${DOCKER_IMAGE_NAME}"
+                }
+            }
+        }
+    }
+}
