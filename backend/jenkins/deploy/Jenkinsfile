@@ -27,7 +27,7 @@ pipeline {
             steps {
                 script {
                     echo "Usando la imagen Docker: ${env.DOCKER_IMAGE_NAME}"
-                    sh "docker run --rm --detach --name ${CONTAINER_NAME} -p 3000:3000 ${DOCKER_IMAGE_NAME}"
+                    sh "docker run --rm --detach --network fleetwise --name ${CONTAINER_NAME} -p 3000:3000 ${DOCKER_IMAGE_NAME}"
                 }
             }
         }
