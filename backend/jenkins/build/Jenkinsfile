@@ -23,6 +23,9 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 dir('Fleetwise/backend') {
+                    withCredentials([file(credentialsId: 'env-vars-fleetwise', variable: 'env_file')]) {
+                    writeFile file: './.env', text: readFile(env_file)
+                }
                     sh "docker build -t ${env.DOCKER_IMAGE_NAME} ."
                 }
             }
