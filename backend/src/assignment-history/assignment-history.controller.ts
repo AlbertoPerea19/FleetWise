@@ -1,9 +1,11 @@
-import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put, UseFilters, UseInterceptors } from '@nestjs/common';
 import { AssignmentHistoryService } from './assignment-history.service';
 import { CreateAssignmentHistoryDto } from './dto/create-assignment-history.dto';
 import { UpdateAssignmentHistoryDto } from './dto/update-assignment-history.dto';
+import { LoggingInterceptor } from 'src/interceptors/logging.interceptor';
 
 @Controller('assignment-history')
+@UseInterceptors(LoggingInterceptor)
 export class AssignmentHistoryController {
   constructor(private readonly assignmentHistoryService: AssignmentHistoryService) {}
 
