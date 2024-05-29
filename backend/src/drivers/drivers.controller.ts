@@ -1,9 +1,11 @@
-import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put, UseFilters, UseInterceptors } from '@nestjs/common';
 import { DriversService } from './drivers.service';
 import { CreateDriverDto } from './dto/create-driver.dto';
 import { UpdateDriverDto } from './dto/update-driver.dto';
+import { LoggingInterceptor } from 'src/interceptors/logging.interceptor';
 
 @Controller('drivers')
+@UseInterceptors(LoggingInterceptor)
 export class DriversController {
   constructor(private readonly driversService: DriversService) {}
 

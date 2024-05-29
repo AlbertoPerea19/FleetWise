@@ -1,7 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Post, UseInterceptors } from '@nestjs/common';
 import { InvitationCodeService } from './invitation-code.service';
+import { LoggingInterceptor } from 'src/interceptors/logging.interceptor';
 
 @Controller('invitation-code')
+@UseInterceptors(LoggingInterceptor)
 export class InvitationCodeController {
   constructor(private readonly invitationCodeService: InvitationCodeService) {}
 
